@@ -58,6 +58,7 @@ function runProgram(){
     repositionGameItem()
     redrawGameItem()
     wallCollision()
+
   }
   
   /* 
@@ -117,6 +118,10 @@ function runProgram(){
     if(event.which === KEY.S){
       walker2.speedY = 0;
     }
+
+    if(doCollide(walker, walker2)){
+      showConnection()
+    } 
   }
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
@@ -162,7 +167,33 @@ function runProgram(){
       walker2.YPos -= 5;
     }
   }
-  
+
+  function doCollide(walker, walker2) {
+
+    walker.leftX = walker.XPos;
+    walker.topY = walker.YPos;
+    walker.rightX = walker.XPos + WALKER_WIDTH;
+    walker.bottomY = walker.YPos + WALKER_HEIGHT;
+    
+    walker2.leftX = walker2.XPos;
+    walker2.topY = walker2.YPos;
+    walker2.rightX = walker2.Xpos + WALKER2_WIDTH;
+    walker2.bottomY = walker2.YPos + WALKER2_HEIGHT;
+
+    if(
+      walker.rightX > walker2.leftX &&
+      walker.leftX < walker2.rightX &&
+      walker.topY < walker2.bottomY &&
+      walker.bottomY > walker2.topY
+      ){
+        return true
+      } else{
+        return false
+      }
+  }
+  function showConnection() {
+    $("h2").text("They're touching!!!");
+}
   function endGame() {
     // stop the interval timer
     clearInterval(interval);
